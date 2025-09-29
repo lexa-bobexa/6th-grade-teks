@@ -9,11 +9,10 @@ type SkillTileProps = {
 
 export function SkillTile({ teks, title, masteryScore, dueReview }: SkillTileProps) {
   const navigate = useNavigate()
-  const percent = Math.round(masteryScore * 100)
   
   return (
     <button
-      onClick={() => navigate('/practice')}
+      onClick={() => navigate(`/practice?teks=${teks}`)}
       style={{
         display: 'grid',
         gap: 12,

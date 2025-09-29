@@ -14,15 +14,16 @@ export async function fetchTeksMap(): Promise<typeof TEKS_MAP> {
   return TEKS_MAP
 }
 
-export async function fetchNextItem(): Promise<LiveItem> {
+export async function fetchNextItem(teks?: string): Promise<LiveItem> {
   try {
-    const res = await fetch(`/api/practice/next`)
+    const url = teks ? `/api/practice/next?teks=${teks}` : `/api/practice/next`
+    const res = await fetch(url)
     if (!res.ok) throw new Error('bad status')
     const data = await res.json()
     return data
   } catch {
     return {
-      id: 'sample-1', teks: '6.7B', type: 'numeric', seed: 1,
+      id: 'sample-1', teks: teks || '6.7B', type: 'numeric', seed: 1,
       prompt: 'What is $8 \\times 6$?', difficulty: 1, hints: ['Think of 8 groups of 6', 'Add: $6+6+6+6+6+6+6+6$'],
     }
   }

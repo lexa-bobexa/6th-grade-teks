@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { usePractice } from '../state/practice'
 import { useMastery } from '../state/mastery'
 import { fetchNextItem, submitAttempt } from '../services/api'
@@ -7,6 +8,9 @@ import { MasteryBar } from './MasteryBar'
 import { MathText } from './MathText'
 
 export function ItemPlayer() {
+  const [searchParams] = useSearchParams()
+  const teksParam = searchParams.get('teks')
+  
   const { currentItem, setCurrentItem, lastResult, setResult, clearResult } = usePractice()
   const { getMastery, setMastery } = useMastery()
   const [input, setInput] = useState<string>('')
@@ -17,10 +21,10 @@ export function ItemPlayer() {
   const currentMastery = currentItem ? getMastery(currentItem.teks) : undefined
 
   useEffect(() => {
-    if (!currentItem) {
-      fetchNextItem().then(setCurrentItem)
+    if (!currentItem || (teksParam && currentItem.teks !== teksParam)) {
+      fetchNextItem(teksParam || undefined).then(setCurrentItem)
     }
-  }, [currentItem, setCurrentItem])
+  }, [currentItem, setCurrentItem, teksParam])
 
   useEffect(() => {
     setInput('')
@@ -59,8 +63,8 @@ export function ItemPlayer() {
     if (correct) {
       // Load next after brief delay
       setTimeout(async () => {
-        const next = await fetchNextItem()
-        setCurrentItem({ ...next, seed: (currentItem.seed || 0) + 1 })
+        const next = await fetchNextItem(currentItem.teks)
+        setCurrentItem(next)
       }, 1000)
     }
   }
