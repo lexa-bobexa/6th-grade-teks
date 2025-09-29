@@ -114,7 +114,8 @@ class ItemFactory:
     def _create_prompt(self, template: Dict[str, Any], params: Dict[str, Any]) -> str:
         """Create the student-facing prompt."""
         if template["teks"] == "6.8B":
-            return f"Find the area of the trapezoid in square {params['units']}."
+            units = params['units']
+            return f"Find the area of the trapezoid in square {units} ({units}²)."
         elif template["teks"] == "6.4":
             return f"What is the unit rate in {params.get('units_y', 'units')} per {params.get('units_x', 'unit')}?"
         elif template["teks"] == "6.7B":

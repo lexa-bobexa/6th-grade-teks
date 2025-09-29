@@ -40,6 +40,7 @@ def get_next_item(
         "teks": item["teks"],
         "type": "numeric",
         "seed": seed,
+        "stimulus": item.get("stimulus"),  # Include SVG diagrams
         "prompt": item["prompt"],
         "difficulty": item.get("difficulty", 2),
         "hints": item.get("hints", []),

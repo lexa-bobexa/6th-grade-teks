@@ -3,34 +3,54 @@ from typing import Dict, Any, List, Tuple
 
 def render_trapezoid(b1: int, b2: int, h: int, units: str = "cm") -> str:
     """Render a trapezoid SVG with given dimensions."""
+    # Scale factor for better visibility
+    scale = 20
+    
     # Calculate coordinates for trapezoid
-    # b1 = bottom base, b2 = top base, h = height
-    width = max(b1, b2) + 4  # Add padding
-    height = h + 4
+    b1_scaled = b1 * scale
+    b2_scaled = b2 * scale
+    h_scaled = h * scale
+    
+    # Add padding for labels
+    padding = 60
+    width = max(b1_scaled, b2_scaled) + padding * 2
+    height = h_scaled + padding * 2
     
     # Center the trapezoid
-    offset_x = 2
-    offset_y = 2
+    center_x = width // 2
+    top_y = padding
+    bottom_y = top_y + h_scaled
     
-    # Calculate trapezoid points
-    # Bottom base: b1, centered
-    bottom_left = offset_x
-    bottom_right = offset_x + b1
+    # Calculate trapezoid points (centered horizontally)
+    bottom_left = center_x - b1_scaled // 2
+    bottom_right = center_x + b1_scaled // 2
+    top_left = center_x - b2_scaled // 2
+    top_right = center_x + b2_scaled // 2
     
-    # Top base: b2, centered
-    top_left = offset_x + (b1 - b2) // 2
-    top_right = top_left + b2
+    # Height line position (slightly to the left of the trapezoid)
+    height_line_x = bottom_left - 40
     
-    # Height
-    top_y = offset_y
-    bottom_y = offset_y + h
-    
-    svg = f'''<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg">
+    svg = f'''<svg width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
+  <!-- Trapezoid shape -->
   <polygon points="{bottom_left},{bottom_y} {bottom_right},{bottom_y} {top_right},{top_y} {top_left},{top_y}" 
-           fill="none" stroke="black" stroke-width="2"/>
-  <text x="{bottom_left + b1//2}" y="{bottom_y + 15}" text-anchor="middle" font-size="12">{b1} {units}</text>
-  <text x="{top_left + b2//2}" y="{top_y - 5}" text-anchor="middle" font-size="12">{b2} {units}</text>
-  <text x="{offset_x - 10}" y="{top_y + h//2}" text-anchor="middle" font-size="12" transform="rotate(-90, {offset_x - 10}, {top_y + h//2})">{h} {units}</text>
+           fill="none" stroke="#1e293b" stroke-width="3"/>
+  
+  <!-- Height indicator line (dashed) -->
+  <line x1="{height_line_x}" y1="{top_y}" x2="{height_line_x}" y2="{bottom_y}" 
+        stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Height arrows -->
+  <polygon points="{height_line_x},{top_y} {height_line_x-5},{top_y+10} {height_line_x+5},{top_y+10}" fill="#3b82f6"/>
+  <polygon points="{height_line_x},{bottom_y} {height_line_x-5},{bottom_y-10} {height_line_x+5},{bottom_y-10}" fill="#3b82f6"/>
+  
+  <!-- Bottom base label -->
+  <text x="{center_x}" y="{bottom_y + 30}" text-anchor="middle" font-size="24" fill="#1e293b" font-weight="600">{b1} {units}</text>
+  
+  <!-- Top base label -->
+  <text x="{center_x}" y="{top_y - 15}" text-anchor="middle" font-size="24" fill="#1e293b" font-weight="600">{b2} {units}</text>
+  
+  <!-- Height label (next to the height line) -->
+  <text x="{height_line_x - 30}" y="{(top_y + bottom_y) // 2 + 8}" text-anchor="middle" font-size="24" fill="#3b82f6" font-weight="600">{h} {units}</text>
 </svg>'''
     return svg
 

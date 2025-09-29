@@ -87,6 +87,13 @@ export function ItemPlayer() {
         </div>
       )}
 
+      {/* Show SVG diagram if available */}
+      {currentItem.stimulus?.diagram?.svg && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 32, background: '#f8fafc', borderRadius: 12, border: '2px solid #cbd5e1', minHeight: 200 }}>
+          <div dangerouslySetInnerHTML={{ __html: currentItem.stimulus.diagram.svg }} />
+        </div>
+      )}
+
       <MathText style={{ fontSize: 16, lineHeight: 1.6 }}>{currentItem.prompt}</MathText>
 
       {currentItem.type === 'numeric' && (
