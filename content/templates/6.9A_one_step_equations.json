@@ -1,0 +1,11 @@
+{
+  "id": "6.9A_one_step",
+  "teks": "6.9A",
+  "type": "numeric",
+  "difficulty": 2,
+  "params": {"form": ["x + a = b", "x - a = b", "c x = d", "x / c = d"], "a_min": -15, "a_max": 15, "b_min": -30, "b_max": 30, "c_choices": [2,3,4,5,6,8,10]},
+  "compute": "solve for x",
+  "answer_format": {"form":"fraction","tolerance":0},
+  "presentation": {"ask":"Solve for x."},
+  "constraints": {"clean_fraction_results": true}
+}

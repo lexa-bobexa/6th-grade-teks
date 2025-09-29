@@ -1,0 +1,16 @@
+{
+  "id": "6.2_rationals_ops",
+  "teks": "6.2",
+  "type": "numeric",
+  "difficulty": 2,
+  "params": {
+    "a_min": -12, "a_max": 12,
+    "b_min": -12, "b_max": 12,
+    "op": ["+","-","×","÷"],
+    "require_nontrivial": true
+  },
+  "compute": "result = op_apply(a,b,op)",
+  "answer_format": {"form":"decimal","tolerance":0,"units":""},
+  "presentation": {"ask":"Compute the value.", "diagram": null},
+  "constraints": {"no_div_zero": true, "denom_divisibility": [2,4,5,10]}
+}

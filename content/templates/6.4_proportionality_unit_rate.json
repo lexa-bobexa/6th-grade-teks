@@ -1,0 +1,11 @@
+{
+  "id": "6.4_unit_rate",
+  "teks": "6.4",
+  "type": "numeric",
+  "difficulty": 2,
+  "params": {"x": {"min": 2, "max": 12}, "y": {"min": 6, "max": 96}, "units_x": ["hours","miles","packs"], "units_y": ["miles","dollars","points"]},
+  "compute": "unit = y/x",
+  "answer_format": {"form":"decimal","tolerance":0.001},
+  "presentation": {"ask":"Find the unit rate.", "diagram": null},
+  "constraints": {"reasonable_unit_pairs": true}
+}

@@ -1,0 +1,11 @@
+{
+  "id": "6.7B_expr_vs_eq",
+  "teks": "6.7B",
+  "type": "mc",
+  "difficulty": 2,
+  "params": {"forms": ["4(x+3)", "(y-5)=12", "2^3+7", "k/5=3", "9m-4"]},
+  "compute": "labels = classify_exprs(forms)",
+  "answer_format": {"form":"label"},
+  "presentation": {"ask":"Select all that are equations."},
+  "constraints": {"at_least_two_each": true}
+}

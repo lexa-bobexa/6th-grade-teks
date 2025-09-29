@@ -1,0 +1,11 @@
+{
+  "id": "6.8B_trapezoid_area",
+  "teks": "6.8B",
+  "type": "numeric",
+  "difficulty": 2,
+  "params": {"b1_min":4, "b1_max":14, "b2_min":6, "b2_max":18, "h_min":3, "h_max":9, "units":["cm","m"]},
+  "compute": "A = (b1 + b2)/2 * h",
+  "answer_format": {"form":"int","tolerance":0,"units":"u^2"},
+  "presentation": {"diagram":"trapezoid_svg","ask":"Find the area."},
+  "constraints": {"nondegenerate": true, "integer_area": true}
+}
