@@ -4,6 +4,7 @@ import { useMastery } from '../state/mastery'
 import { fetchNextItem, submitAttempt } from '../services/api'
 import { HintModal } from './HintModal'
 import { MasteryBar } from './MasteryBar'
+import { MathText } from './MathText'
 
 export function ItemPlayer() {
   const { currentItem, setCurrentItem, lastResult, setResult, clearResult } = usePractice()
@@ -82,7 +83,7 @@ export function ItemPlayer() {
         </div>
       )}
 
-      <div style={{ fontSize: 16, lineHeight: 1.6 }}>{currentItem.prompt}</div>
+      <MathText style={{ fontSize: 16, lineHeight: 1.6 }}>{currentItem.prompt}</MathText>
 
       {currentItem.type === 'numeric' && (
         <input inputMode="numeric" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Enter answer" />

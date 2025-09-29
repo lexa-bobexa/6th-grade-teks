@@ -23,7 +23,7 @@ export async function fetchNextItem(): Promise<LiveItem> {
   } catch {
     return {
       id: 'sample-1', teks: '6.7B', type: 'numeric', seed: 1,
-      prompt: 'What is 8 × 6?', difficulty: 1, hints: ['Think of 8 groups of 6', '6+6+6+6+6+6+6+6'],
+      prompt: 'What is $8 \\times 6$?', difficulty: 1, hints: ['Think of 8 groups of 6', 'Add: $6+6+6+6+6+6+6+6$'],
     }
   }
 }
