@@ -1,39 +1,97 @@
 # TEKS Grade 6 Math Tutor
 
-A teacher-free, AI-generated and solver-graded 6th-grade TEKS math tutor built with FastAPI.
+A teacher-free, AI-generated and solver-graded 6th-grade TEKS math tutor with a modern React frontend and FastAPI backend.
 
-## Features
+## 🎯 Features
 
-- **5 Math Skills**: Rational numbers, proportionality, expressions vs equations, trapezoid area, one-step equations
-- **Adaptive Difficulty**: Automatically adjusts based on student performance
-- **Mastery Tracking**: EWMA-based mastery scoring with spaced repetition
-- **SVG Diagrams**: Dynamic trapezoid, number line, and coordinate plane renderings
-- **Template-Based Generation**: Parametric item generation from JSON templates
-- **RESTful API**: Clean FastAPI endpoints for practice, attempts, and progress
+### Backend (FastAPI)
+- ✅ **5 Math Skills**: Rational numbers, proportionality, expressions vs equations, trapezoid area, one-step equations
+- ✅ **Adaptive Difficulty**: Automatically adjusts based on student performance
+- ✅ **Mastery Tracking**: EWMA-based mastery scoring with spaced repetition
+- ✅ **SVG Diagrams**: Dynamic trapezoid, number line, and coordinate plane renderings
+- ✅ **Template-Based Generation**: Parametric item generation from JSON templates
+- ✅ **RESTful API**: Clean FastAPI endpoints for practice, attempts, and progress
 
-## Quick Start
+### Frontend (React + TypeScript)
+- ✅ **Modern Dark UI**: Sleek dark theme with smooth animations
+- ✅ **Item Player**: Supports numeric and multiple-choice questions
+- ✅ **MathJax Integration**: Beautiful LaTeX math rendering
+- ✅ **TEKS Map**: Visual skill grid with mastery rings
+- ✅ **Progress Dashboard**: Track attempts, mastery, and skill growth
+- ✅ **Review Builder**: Spaced repetition with custom practice sets
+- ✅ **Accessibility**: Dyslexia-friendly fonts, text size controls, high contrast theme
+- ✅ **Offline-First**: Persisted state with IndexedDB/localStorage
+- ✅ **Responsive**: Mobile-first design with adaptive navigation
 
-### Installation
+## 📦 Project Structure
+
+```
+6th-grade-teks/
+├── api/                    # FastAPI backend
+│   ├── main.py            # App entry point
+│   ├── deps.py            # Dependency injection
+│   └── routers/           # API endpoints
+├── engines/               # Core logic
+│   ├── solver.py          # Symbolic math solver
+│   ├── grader.py          # Answer validation
+│   └── svg_renderers.py   # Dynamic diagrams
+├── services/              # Business logic
+│   ├── item_factory.py    # Item generation
+│   ├── mastery.py         # Mastery scoring
+│   └── spaced_review.py   # Review scheduling
+├── content/               # TEKS templates
+│   ├── teks_map.json
+│   └── templates/
+├── frontend/              # React app
+│   ├── src/
+│   │   ├── components/    # UI components
+│   │   ├── state/         # Zustand stores
+│   │   ├── services/      # API client
+│   │   └── App.tsx
+│   ├── index.html
+│   └── package.json
+└── tests/                 # Unit tests
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- npm or yarn
+
+### Backend Setup
 
 ```bash
-# Install dependencies
+# Install Python dependencies
 pip install -e .
 
-# Or install manually
+# Or manually
 pip install fastapi uvicorn pydantic sympy numpy python-dotenv httpx pytest
+
+# Run development server
+uvicorn api.main:app --reload --port 8000
+
+# Server runs at http://localhost:8000
+# API docs at http://localhost:8000/docs
 ```
 
-### Running the Server
+### Frontend Setup
 
 ```bash
-# Development server
-uvicorn api.main:app --reload
+# Navigate to frontend
+cd frontend
 
-# Production server
-uvicorn api.main:app --host 0.0.0.0 --port 8000
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# App runs at http://localhost:5173
 ```
 
-### Docker
+### Docker Deployment
 
 ```bash
 # Build image
@@ -43,178 +101,143 @@ docker build -t teks-grade6 .
 docker run -p 8000:8000 teks-grade6
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
 ### Health Check
 - `GET /health` - Service health status
 
 ### Practice
-- `GET /practice/next?teks=6.8B` - Get next practice item for a TEKS
+- `GET /practice/next?teks_code=6.7B&difficulty=3` - Get next practice item
+- `POST /practice/retry/{item_id}` - Retry an item with different values
 
 ### Attempts
-- `POST /attempts` - Submit an attempt and get grading results
+- `POST /attempts` - Submit an attempt
   ```json
   {
-    "item_id": "itm_6.8B_trap_1234",
-    "user_response": 40,
-    "teks": "6.8B",
-    "difficulty": 2
+    "item_id": "abc123",
+    "user_id": "student_1",
+    "response": 42,
+    "time_ms": 15000
   }
   ```
 
 ### Progress
-- `GET /progress/me` - Get user's mastery progress across all skills
+- `GET /progress/{user_id}` - Get user's mastery progress
 
-## Example Usage
+### Items
+- `GET /items/{item_id}` - Get specific item details
 
-### Get a Practice Item
+## 🎨 Frontend Architecture
+
+### State Management (Zustand)
+- **Auth**: User sign-in/sign-out
+- **Settings**: Theme, accessibility, preferences
+- **Mastery**: Skill-level scores and review dates
+- **Practice**: Current item, results, queue
+
+### Key Components
+- `ItemPlayer` - Main practice interface with hint modal
+- `SkillTile` - TEKS skill card with mastery ring
+- `MathText` - MathJax wrapper for LaTeX rendering
+- `HintModal` - Progressive hint system
+- `MasteryBar` - Visual progress indicator
+
+### Routing
+- `/signin` - User authentication
+- `/` - TEKS skill map (Home)
+- `/practice` - Item player
+- `/review` - Spaced repetition builder
+- `/progress` - Analytics dashboard
+- `/settings` - Accessibility & preferences
+
+## 🧪 Testing
 
 ```bash
-curl "http://localhost:8000/practice/next?teks=6.8B"
+# Run backend tests
+pytest tests/ -v
+
+# Run frontend tests (when added)
+cd frontend && npm test
 ```
 
-Response:
+## 📝 Content Templates
+
+Each TEKS standard has a JSON template:
+
 ```json
 {
-  "id": "itm_6.8B_6.8B_trapezoid_area_1234",
-  "teks": "6.8B",
+  "id": "6.7B",
+  "title": "Expressions vs Equations",
   "type": "numeric",
-  "stimulus": {
-    "diagram": {
-      "shape": "trapezoid",
-      "b1": 7,
-      "b2": 13,
-      "h": 4,
-      "units": "cm",
-      "svg": "<svg>...</svg>"
-    }
-  },
-  "prompt": "Find the area of the trapezoid in square centimeters.",
-  "answer": 40,
-  "hints": [
-    "Area of a trapezoid is (b1+b2)/2 × h.",
-    "Add the bases first, then divide by 2."
-  ],
-  "explanation": "First add the bases: 7+13=20. Half is 10. Multiply by height 4 to get 40 cm².",
-  "difficulty": 2
+  "difficulty_range": [1, 5],
+  "prompt_template": "Solve for x: {lhs} = {rhs}",
+  "variables": {
+    "lhs": {"type": "expression", "complexity": 2},
+    "rhs": {"type": "int", "range": [1, 20]}
+  }
 }
 ```
 
-### Submit an Attempt
+## 🎯 Mastery Algorithm
 
-```bash
-curl -X POST "http://localhost:8000/attempts" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "item_id": "itm_6.8B_trap_1234",
-    "user_response": 40,
-    "teks": "6.8B",
-    "difficulty": 2
-  }'
-```
+Uses Exponential Weighted Moving Average (EWMA):
+- **Correct answer**: +3% mastery
+- **Incorrect answer**: -1% mastery
+- **Review scheduling**: Items due 7 days after practice
+- **Spaced repetition**: Adaptive review intervals
 
-Response:
-```json
-{
-  "correct": true,
-  "mastery_delta": 0.03,
-  "mastery": 0.15,
-  "is_mastered": false,
-  "next_item_hint": null
-}
-```
+## 🛠️ Tech Stack
 
-## Project Structure
+**Backend:**
+- FastAPI (async Python web framework)
+- SymPy (symbolic mathematics)
+- Pydantic (data validation)
+- NumPy (numerical computations)
 
-```
-/
-├── api/                    # FastAPI application
-│   ├── main.py            # App initialization and routing
-│   ├── deps.py            # Shared dependencies
-│   └── routers/           # API route handlers
-│       ├── health.py      # Health check endpoint
-│       ├── items.py       # Practice item generation
-│       ├── attempts.py    # Attempt submission and grading
-│       └── progress.py    # Progress tracking
-├── engines/               # Core computation engines
-│   ├── solver.py          # Math problem solving (SymPy)
-│   ├── grader.py          # Answer grading logic
-│   ├── validators.py      # Content validation and safety
-│   ├── svg_renderers.py   # Diagram generation
-│   └── decorator_llm.py   # Content generation (simplified)
-├── services/              # Business logic services
-│   ├── item_factory.py    # Template-based item generation
-│   ├── mastery.py         # EWMA mastery tracking
-│   ├── curriculum.py      # Skill sequencing and difficulty
-│   └── spaced_review.py   # Spaced repetition scheduling
-├── content/               # Educational content
-│   ├── teks_map.json      # TEKS skill mapping
-│   └── templates/         # Parametric item templates
-│       ├── 6.2_rationals_ops.json
-│       ├── 6.4_proportionality_unit_rate.json
-│       ├── 6.7B_expr_vs_eq.json
-│       ├── 6.8B_area_trapezoid.json
-│       └── 6.9A_one_step_equations.json
-├── scripts/               # Utility scripts
-│   └── seed_items.py      # Generate item batches
-├── tests/                 # Test suite
-│   ├── test_api_contracts.py
-│   ├── test_solver.py
-│   └── test_grader.py
-└── pyproject.toml         # Project configuration
-```
+**Frontend:**
+- React 19 + TypeScript
+- Vite (build tool)
+- Zustand (state management)
+- Tailwind CSS
+- MathJax (LaTeX rendering)
+- Radix UI (accessible components)
 
-## Testing
+## 📄 License
 
-```bash
-# Run all tests
-pytest
+MIT License - See LICENSE file for details
 
-# Run specific test file
-pytest tests/test_solver.py
+## 🤝 Contributing
 
-# Run with verbose output
-pytest -v
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Generating Items
+## 📚 Documentation
 
-```bash
-# Generate sample items for all templates
-python scripts/seed_items.py
-```
+- [API Specification](v1spec.md) - Backend API contracts
+- [Frontend UI/UX Spec](frontend-ui-ux-spec.md) - Design system and user flows
 
-## Skills Covered
+## 🎓 TEKS Standards Covered
 
-- **6.2**: Rational Numbers & Operations (mixed operations with integers)
-- **6.4**: Proportionality & Unit Rate (rate tables and unit rates)
-- **6.7B**: Expressions vs Equations (classification and identification)
-- **6.8B**: Area of a Trapezoid (geometry with formulas)
-- **6.9A**: One-Step Equations (solving with rational coefficients)
+- **6.2**: Rational Numbers & Operations
+- **6.4**: Proportionality & Unit Rate
+- **6.7B**: Distinguish expressions from equations
+- **6.8B**: Model and solve area of trapezoids
+- **6.9A**: Write one-step equations
 
-## Mastery System
+## 🚧 Roadmap
 
-- **EWMA Scoring**: Exponentially weighted moving average for smooth progress tracking
-- **Adaptive Difficulty**: Steps up after 3 correct, down after 2 incorrect
-- **Spaced Review**: 1, 3, 7, 21, 60 day intervals based on mastery level
-- **Prerequisites**: Skills unlock based on prerequisite mastery
+- [ ] Add expression input type (symbolic math)
+- [ ] Plot/graph input for coordinate geometry
+- [ ] Teacher dashboard with class analytics
+- [ ] Export progress reports (PDF)
+- [ ] More TEKS standards (6.3, 6.5, 6.10+)
+- [ ] Parent view with progress tracking
+- [ ] Voice read-aloud for accessibility
+- [ ] Printable worksheet generator
 
-## Development
+---
 
-### Adding New Skills
-
-1. Create a new template in `content/templates/`
-2. Add solver logic in `engines/solver.py`
-3. Update TEKS mapping in `api/routers/items.py`
-4. Add curriculum dependencies in `services/curriculum.py`
-
-### Adding New Item Types
-
-1. Extend the template schema in `content/templates/`
-2. Add grading logic in `engines/grader.py`
-3. Update item factory in `services/item_factory.py`
-4. Add SVG renderers if needed in `engines/svg_renderers.py`
-
-## License
-
-This project is built according to the TEKS Grade 6 Math Tutor specification for educational use.
+Built with ❤️ for middle school math learners
